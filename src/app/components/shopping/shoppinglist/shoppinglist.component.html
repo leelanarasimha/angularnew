@@ -1,0 +1,21 @@
+<div class="row">
+    <div class="col-md-12">
+        <h3>Shopping List</h3>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <app-shoppinglistedit (ingredientAdded)="ingredientwasadded($event)"></app-shoppinglistedit>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-10">
+        <div class="list-group">
+            <a href="#" class="list-group-item" 
+            (click)="onIngredientClicked($event, i)" 
+            *ngFor="let ingredient of ingredients; let i = index">{{ingredient.name}} ({{ingredient.amount}})</a>
+        </div>
+    </div>
+</div>
