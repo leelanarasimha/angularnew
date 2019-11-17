@@ -14,8 +14,9 @@
             aria-expanded="false">Manage Recipe</button>
 
             <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                <a class="dropdown-item" href="#" (click)="onShoppinglistAdd()">Add to Shoppinglist</a>
+                <a class="dropdown-item" href="#" (click)="onShoppinglistAdd($event)">Add to Shoppinglist</a>
                 <a class="dropdown-item" [routerLink]="['/recipes', id, 'edit']">Edit Recipe</a>
+                <a class="dropdown-item" href="#" (click)="onDeleteRecipe($event)">Delete Recipe</a>
             </div>
         </div>
 

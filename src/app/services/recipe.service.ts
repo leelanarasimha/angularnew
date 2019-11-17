@@ -3,6 +3,7 @@ import { Output, EventEmitter } from '@angular/core';
 import { Ingredient } from '../models/ingredient.model';
 
 export class RecipeService {
+	@Output() recipesChanged = new EventEmitter<Recipe[]>();
 	private recipes: Recipe[] = [
 		new Recipe(
 			'Recipe 1',
@@ -18,8 +19,6 @@ export class RecipeService {
 		)
 	];
 
-	@Output() recipeSelected = new EventEmitter<Recipe>();
-
 	constructor() {}
 
 	getRecipes() {
@@ -28,5 +27,20 @@ export class RecipeService {
 
 	getRecipeById(id: number) {
 		return this.recipes[id];
+	}
+
+	addRecipe(recipe: Recipe) {
+		this.recipes.push(recipe);
+		this.recipesChanged.next(this.getRecipes());
+	}
+
+	editRecipe(index: number, recipe: Recipe) {
+		this.recipes[index] = recipe;
+		this.recipesChanged.next(this.getRecipes());
+	}
+
+	deleteRecipe(index: number) {
+		this.recipes.splice(index, 1);
+		this.recipesChanged.next(this.getRecipes());
 	}
 }

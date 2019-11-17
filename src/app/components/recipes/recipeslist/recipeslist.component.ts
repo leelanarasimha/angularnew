@@ -8,13 +8,17 @@ import { RecipeService } from 'src/app/services/recipe.service';
 	styleUrls: [ './recipeslist.component.css' ]
 })
 export class RecipeslistComponent implements OnInit {
-	@Output('recipeselected') recipeSelected = new EventEmitter<Recipe>();
-
 	recipes: Recipe[];
 
 	constructor(private recipeService: RecipeService) {}
 
 	ngOnInit() {
 		this.recipes = this.recipeService.getRecipes();
+
+		this.recipeService.recipesChanged.subscribe((recipes: Recipe[]) => {
+			console.log('TCL: RecipeslistComponent -> ngOnInit -> recipes', recipes);
+
+			this.recipes = recipes;
+		});
 	}
 }

@@ -10,7 +10,6 @@ import { RecipeService } from 'src/app/services/recipe.service';
 export class RecipeitemComponent implements OnInit {
 	@Input('recipe') recipe: Recipe;
 	@Input('id') id;
-	@Output() recipeSelected = new EventEmitter<Recipe>();
 
 	constructor(private recipeService: RecipeService) {}
 
@@ -18,6 +17,5 @@ export class RecipeitemComponent implements OnInit {
 
 	onRecipeSelect(event: Event) {
 		event.preventDefault();
-		this.recipeService.recipeSelected.emit(this.recipe);
 	}
 }
