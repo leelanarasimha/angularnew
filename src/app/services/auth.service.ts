@@ -1,18 +1,79 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AuthResponseData } from '../models/authresponsedata.model';
+import { catchError, tap } from 'rxjs/operators';
+import { throwError, Subject } from 'rxjs';
+import { User } from '../models/user.model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+	userSubject = new Subject<User>();
 	constructor(private http: HttpClient) {}
 
 	signUp(email: string, password: string) {
-		return this.http.get<
-			AuthResponseData
-		>(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=[API_KEY]`, {
-			email: email,
-			password: password,
-			returnSecureToken: true
-		});
+		return this.http
+			.post<AuthResponseData>(
+				`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=
+AIzaSyCrsyZ9YaxBGAJ1PGiKantLHsDhd-KL5BM
+`,
+				{
+					email: email,
+					password: password,
+					returnSecureToken: true
+				}
+			)
+			.pipe(
+				catchError(this.handleError),
+				tap((res) => {
+					this.handleAuthentication(res.email, res.localId, res.idToken, +res.expiresIn);
+				})
+			);
+	}
+	Login(email: string, password: string) {
+		return this.http
+			.post<
+				AuthResponseData
+			>(
+				`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCrsyZ9YaxBGAJ1PGiKantLHsDhd-KL5BM`,
+				{
+					email: email,
+					password: password,
+					returnSecureToken: true
+				}
+			)
+			.pipe(
+				catchError(this.handleError),
+				tap((res) => {
+					this.handleAuthentication(res.email, res.localId, res.idToken, +res.expiresIn);
+				})
+			);
+	}
+
+	private handleError(errorRes) {
+		let errorMessage = 'Some Unknown Error Occured';
+
+		if (!errorRes.error || !errorRes.error.error) {
+			return throwError(errorMessage);
+		}
+
+		switch (errorRes.error.error.errors[0].message) {
+			case 'EMAIL_EXISTS':
+				errorMessage = 'EMail already exists';
+				break;
+			case 'EMAIL_NOT_FOUND':
+				errorMessage = 'Email doesnt exists';
+				break;
+			case 'INVALID_PASSWORD':
+				errorMessage = 'Invalid Password';
+				break;
+		}
+
+		return throwError(errorMessage);
+	}
+
+	private handleAuthentication(email: string, userId: string, token: string, expires: number) {
+		let expirationDate = new Date(new Date().getTime() + expires * 1000);
+		let user = new User(email, userId, token, expirationDate);
+		this.userSubject.next(user);
 	}
 }

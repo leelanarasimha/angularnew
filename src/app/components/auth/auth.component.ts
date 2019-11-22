@@ -9,6 +9,8 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class AuthComponent implements OnInit {
 	isLoginMode = true;
+	Loading = false;
+	error = '';
 
 	constructor(private authService: AuthService) {}
 
@@ -19,19 +21,32 @@ export class AuthComponent implements OnInit {
 	}
 
 	onSubmit(form: NgForm) {
-		let email = form.value;
-		let password = form.value;
+		let email = form.value.email;
+		let password = form.value.password;
 
+		this.Loading = true;
 		if (this.isLoginMode) {
-		} else {
-			this.authService
-				.signUp(email, password)
-				.subscribe((response) => {
+			this.authService.Login(email, password).subscribe(
+				(response) => {
+					this.Loading = false;
 					console.log(response);
-				})
-				.catch((error) => {
-					console.log(error);
-				});
+				},
+				(errorMessage) => {
+					this.error = errorMessage;
+					this.Loading = false;
+				}
+			);
+		} else {
+			this.authService.signUp(email, password).subscribe(
+				(response) => {
+					this.Loading = false;
+					console.log(response);
+				},
+				(errorMessage) => {
+					this.Loading = false;
+					this.error = errorMessage;
+				}
+			);
 		}
 	}
 }
