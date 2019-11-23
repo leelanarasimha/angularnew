@@ -28,4 +28,9 @@ export class HeaderComponent implements OnInit {
 		event.preventDefault();
 		this.datastorageService.fetchRecipes().subscribe();
 	}
+
+	onLogout(event: Event) {
+		event.preventDefault();
+		this.authService.logout();
+	}
 }

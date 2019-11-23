@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthService } from './services/auth.service';
 
 @Component({
 	selector: 'app-root',
@@ -7,10 +8,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
 	title = 'complete-angular';
-	loadedFeature: string = 'recipe';
+	constructor(private authService: AuthService) {}
 
-	onFeatureSelected(event: string) {
-		console.log('TCL: AppComponent -> onFeatureSelected -> event', event);
-		this.loadedFeature = event;
+	ngOnInit() {
+		this.authService.autoLogin();
 	}
 }
