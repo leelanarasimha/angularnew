@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { StoreModule } from '@ngrx/store';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -15,6 +16,7 @@ import { AlertComponent } from './components/shared/alert/alert.component';
 import { AppPlaceholderDirective } from './directives/appplaceholder.directive';
 import { RecipesModule } from './components/recipes/recipes.module';
 import { ShoppinglistModule } from './components/shopping/shoppinglist.module';
+import { shoppinglistReducer } from './components/shopping/store/shoppinglist.reducer';
 
 @NgModule({
 	declarations: [
@@ -30,6 +32,7 @@ import { ShoppinglistModule } from './components/shopping/shoppinglist.module';
 		AppRoutingModule,
 		FormsModule,
 		ReactiveFormsModule,
+		StoreModule.forRoot({ shoppingList: shoppinglistReducer }),
 		HttpClientModule,
 		RecipesModule,
 		ShoppinglistModule

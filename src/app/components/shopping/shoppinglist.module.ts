@@ -9,7 +9,7 @@ const appRoutes: Routes = [ { path: 'shoppinglist', component: ShoppinglistCompo
 
 @NgModule({
 	declarations: [ ShoppinglistComponent, ShoppinglisteditComponent ],
-	imports: [ RouterModule.forChild(appRoutes), CommonModule, FormsModule ],
+	imports: [ CommonModule, RouterModule.forChild(appRoutes), FormsModule ],
 	exports: [ RouterModule ]
 })
 export class ShoppinglistModule {}
