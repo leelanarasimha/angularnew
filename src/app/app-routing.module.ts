@@ -1,24 +1,18 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule } from '@angular/router'; //7893391403
 import { RecipesComponent } from './components/recipes/recipes/recipes.component';
 import { ShoppinglistComponent } from './components/shopping/shoppinglist/shoppinglist.component';
 import { RecipestartComponent } from './components/recipes/recipestart/recipestart.component';
 import { RecipedetailsComponent } from './components/recipes/recipedetails/recipedetails.component';
 import { EditrecipeComponent } from './components/recipes/editrecipe/editrecipe.component';
+import { RecipeResolverService } from './services/reciperesolver.service';
+import { AuthComponent } from './components/auth/auth.component';
+import { AuthGuard } from './guards/auth.guard';
 
 const appRoutes: Routes = [
 	{ path: '', redirectTo: '/recipes', pathMatch: 'full' },
-	{
-		path: 'recipes',
-		component: RecipesComponent,
-		children: [
-			{ path: '', component: RecipestartComponent },
-			{ path: 'new', component: EditrecipeComponent },
-			{ path: ':id', component: RecipedetailsComponent },
-			{ path: ':id/edit', component: EditrecipeComponent }
-		]
-	},
-	{ path: 'shoppinglist', component: ShoppinglistComponent }
+
+	{ path: 'auth', component: AuthComponent }
 ];
 
 @NgModule({
